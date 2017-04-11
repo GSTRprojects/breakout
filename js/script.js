@@ -8,19 +8,19 @@ var y = canvas.height - 30;
 
 var dx = 2;
 var dy = -2;
-var ballRadius = 5;
-var paddleHeight = 10;
-var paddleWidth = 70;
+var ballRadius = 3;
+var paddleHeight = 7;
+var paddleWidth = 50;
 var paddleX = (canvas.width - paddleWidth) / 2; //położenie platformy
 var rightPressed = false;
 var leftPressed = false;
-var brickRowCount = 3;
-var brickColumnCount = 5;
-var brickWidth = 40;
+var brickRowCount = 4;
+var brickColumnCount = 7;
+var brickWidth = 30;
 var brickHeight = 10;
 var brickPadding = 5;
 var brickOffsetTop = 20;
-var brickOffsetLeft = 20;
+var brickOffsetLeft = 30;
 var score = 0;
 var lives = 3;
 
@@ -48,7 +48,7 @@ function drawBricks() {
                 bricks[c][r].y = brickY;
                 ctx.beginPath();
                 ctx.rect(brickX, brickY, brickWidth, brickHeight);
-                ctx.fillStyle = "blue";
+                ctx.fillStyle = "#8b86ba";
                 ctx.fill();
                 ctx.closePath();
             }
@@ -56,7 +56,7 @@ function drawBricks() {
     }
 }
 
-// uruchamianie funkcji keyDownHandler / keyUpHandler
+//dodanie event listenerów - uruchamianie funkcji keyDownHandler / keyUpHandler
 document.addEventListener("keydown", keyDownHandler);
 document.addEventListener("keyup", keyUpHandler);
 
@@ -81,7 +81,7 @@ function keyUpHandler(e) {
 function drawBall() {
     ctx.beginPath();
     ctx.arc(x, y, ballRadius, 0, Math.PI * 2); //zamiast sztywnych wartości wpisujemy zmienne x i y
-    ctx.fillStyle = "blue";
+    ctx.fillStyle = "#e35812";
     ctx.fill();
     ctx.closePath();
 }
@@ -90,7 +90,7 @@ function drawBall() {
 function drawPaddle() {
     ctx.beginPath();
     ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
-    ctx.fillStyle = "blue";
+    ctx.fillStyle = "#8b86ba";
     ctx.fill();
     ctx.closePath();
 }
@@ -106,7 +106,7 @@ function collisionDetection() {
                     b.status = 0; //zmień status na 0 żeby klocek nie był rysowany kolejny raz
                     score++;
                     if (score == brickColumnCount * brickRowCount) {
-                        alert("You Win!! Congratulations!!");
+                        alert("Victory!!!");
                         document.location.reload();
                     }
                 }
@@ -115,19 +115,21 @@ function collisionDetection() {
     }
 }
 
+//punktacja
 function drawScore() {
-    ctx.font = "12px Arial";
-    ctx.fillStyle = "blue";
+    ctx.font = "10px Arial";
+    ctx.fillStyle = "#450f42";
     ctx.fillText("Score: " + score, 8, 15);
 }
 
+//życia
 function drawLives() {
-    ctx.font = "12px Arial";
-    ctx.fillStyle = "blue";
+    ctx.font = "10px Arial";
+    ctx.fillStyle = "#450f42";
     ctx.fillText("Lives: " + lives, canvas.width - 65, 15);
 }
 
-//funkcja rysująca piłkę w kolejnych miejscach i czyszcząca canvas przed każdym kolejnym wykonaniem
+//funkcja rysująca wszystkie elementy i czyszcząca canvas przed każdym kolejnym wykonaniem
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height); // funkcja czyszcząca cały prostokąt przed narysowaniem kolejnej piłki (eliminuje ślad)
     drawBall();
@@ -141,7 +143,7 @@ function draw() {
     if (y + dy < ballRadius) {
         dy = -dy;
     } else if (y + dy > canvas.height - ballRadius) {
-        if (x > paddleX && x < paddleX + canvas.width) { //jeśli x, czyli pozycja piłki w osi x jest w tym przedziale co lewa i prawa krawędź 
+        if (x > paddleX && x < paddleX + canvas.width) { //jeśli x, czyli pozycja piłki w osi x jest w tym przedziale co lewa i prawa krawędź
             dy = -dy; //platformy, to zmień kierunek generowania piłki
         } else {
             lives--;
@@ -163,9 +165,9 @@ function draw() {
     }
 
     if (rightPressed && paddleX < canvas.width - paddleWidth) {
-        paddleX += 7;
+        paddleX += 4;
     } else if (leftPressed && paddleX > 0) {
-        paddleX -= 7;
+        paddleX -= 4;
     }
 
     x += dx;
